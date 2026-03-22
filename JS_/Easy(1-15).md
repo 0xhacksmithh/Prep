@@ -413,11 +413,120 @@ A block of reusable code designed to perform a task.
 
 # 8. What is an `arrow function`?
 
-Shorter function syntax without its own this.
+An **arrow function** is a shorter and more concise way to write functions in JavaScript, introduced in ES6.
 
+### 🔹 Basic Syntax
+
+**Normal Function:**
+
+```c
+function add(a, b) {
+  return a + b;
+}
 ```
+
+**Arrow Function:**
+
+```c
+const add = (a, b) => {
+  return a + b;
+};
+```
+
+### 🔹 Even Shorter (Implicit Return)
+
+If there’s only one expression:
+
+```c
 const add = (a, b) => a + b;
 ```
+
+👉 No `return` needed!
+
+### 🔹 Key Features
+
+**1. Shorter Syntax**
+
+Cleaner and more readable:
+
+```c
+const greet = () => console.log("Hello!");
+```
+
+**2. No Own `this`**
+
+Arrow functions do NOT have their own `this`.
+They inherit `this` from their surrounding (lexical scope).
+
+**Example:**
+
+```c
+const obj = {
+  name: "JS",
+  normalFunc: function () {
+    console.log(this.name); // JS
+  },
+  arrowFunc: () => {
+    console.log(this.name); // undefined (or global)
+  }
+};
+
+obj.normalFunc();
+obj.arrowFunc();
+```
+
+👉 This is the most important difference.
+
+**3. Cannot Be Used as Constructor**
+
+```c
+const Person = (name) => {
+  this.name = name;
+};
+
+const p = new Person("John"); // ❌ Error
+```
+
+**4. No `arguments` Object**
+
+```c
+const test = () => {
+  console.log(arguments); // ❌ Not available
+};
+```
+
+### 🔹 When to Use Arrow Functions
+
+✅ Best for:
+
+- Short functions
+- Callbacks
+- Functional programming (map, filter, reduce)
+
+```c
+[1, 2, 3].map(n => n * 2);
+```
+
+### 🔹 When NOT to Use
+
+❌ Avoid in:
+
+- Object methods (because of `this`)
+- Constructors
+- Event handlers (sometimes)
+
+### 🔹 Quick Comparison
+
+| Feature     | Normal Function | Arrow Function |
+| ----------- | --------------- | -------------- |
+| Syntax      | Longer          | Shorter        |
+| `this`      | Own             | Inherited      |
+| Constructor | ✅ Yes          | ❌ No          |
+| `arguments` | ✅ Yes          | ❌ No          |
+
+### 🔹 One-Line Definition
+
+An arrow function is a shorter way to write functions in JavaScript with lexical `this` binding.
 
 # 9. What is an array?
 
@@ -451,8 +560,111 @@ A function passed as an argument to another function.
 
 # 15. What is strict mode?
 
-Prevents common JS mistakes.
+**Strict mode** in JavaScript is a way to opt into a stricter set of rules that helps you write cleaner, safer, and more predictable code.
 
-```
+### 🔹 How to Enable Strict Mode
+
+Add this at the top of your file or function:
+
+```c
 "use strict";
 ```
+
+👉 It can be:
+
+- **Global** (entire file)
+- **Local** (inside a function)
+
+### 🔹 Why Strict Mode Exists
+
+JavaScript was originally very permissive, which led to:
+
+- Silent errors
+- Bad practices
+- Hard-to-debug bugs
+
+Strict mode fixes these by:
+
+- Throwing errors instead of failing silently
+- Preventing unsafe behavior
+
+### 🔹 Key Changes in Strict Mode
+
+**1. ❌ No Undeclared Variables**
+
+```c
+"use strict";
+
+x = 10; // ❌ ReferenceError
+```
+
+👉 In normal mode, this would create a global variable.
+
+**2. ❌ `this` is Undefined in Functions**
+
+```c
+"use strict";
+
+function test() {
+  console.log(this); // undefined
+}
+test();
+```
+
+👉 Without strict mode → `this` would be the global object
+
+**3. ❌ No Duplicate Parameter Names**
+
+```c
+"use strict";
+
+function sum(a, a) { // ❌ Error
+  return a + a;
+}
+```
+
+**4. ❌ Cannot Delete Variables/Functions**
+
+```c
+"use strict";
+
+let x = 10;
+delete x; // ❌ Error
+```
+
+**5. ❌ Reserved Keywords Restricted**
+
+You can't use future keywords as variable names:
+
+```c
+"use strict";
+
+let interface = "test"; // ❌ Error
+```
+
+**6. ❌ Silent Failures Become Errors**
+
+```c
+"use strict";
+
+Object.defineProperty({}, "x", { value: 10, writable: false });
+x = 20; // ❌ Error instead of silent fail
+```
+
+### 🔹 Where Strict Mode is Already Enabled
+
+You don’t need `"use strict"` in:
+
+- ES6 modules (`import/export`)
+- Classes
+
+### 🔹 Benefits
+
+✅ Catches bugs early
+✅ Prevents accidental globals
+✅ Makes code more secure
+✅ Improves optimization by JS engines (like V8)
+
+### 🔹 One-Line Summary
+
+Strict mode makes JavaScript behave more like a disciplined language by enforcing stricter rules and throwing errors for unsafe code.
